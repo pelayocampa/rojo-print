@@ -22,6 +22,7 @@ if "total_co2" not in st.session_state:
 
 # Header
 st.title("🌍 Rojo-Foot-Print Mockup")
+st.subheader("Track Your Carbon Footprint from Travel")
 st.markdown("Track and visualize your carbon footprint from travel")
 
 
@@ -85,6 +86,7 @@ with operations_col:
             "Walk": 0,
         }
 
+        geolocator = Nominatim(user_agent="rojo-foot-print")
         submit_button = st.form_submit_button(label="Add Entry")
 
         if submit_button:
@@ -98,7 +100,6 @@ with operations_col:
             # Use geopy to calculate the distance
 
             try:
-                geolocator = Nominatim(user_agent="rojo-foot-print")
                 origin_location = geolocator.geocode(origin)
                 destination_location = geolocator.geocode(destination)
 
