@@ -26,10 +26,10 @@ st.markdown("Track and visualize your carbon footprint from travel")
 # Create two columns for the main layout
 operations_col, map_col = st.columns([1, 2])
 
-cars_dataset_path = kagglehub.dataset_download(
-    "midhundasl/co2-emission-of-cars-dataset"
-)
-dataset_dataframe = pd.read_csv(cars_dataset_path)
+# cars_dataset_path = kagglehub.dataset_download(
+#     "midhundasl/co2-emission-of-cars-dataset"
+# )
+# dataset_dataframe = pd.read_csv(cars_dataset_path)
 # Display the dataset in the sidebar
 
 with operations_col:
@@ -44,16 +44,16 @@ with operations_col:
         )
 
         # Show additional options if Car is selected
-        if vehicle_type == "Car":
-            brands = dataset_dataframe["Car"].unique().tolist()
-            car_brand = st.selectbox(
-                "Car Brand",
-                brands,
-            )
-            if car_brand:
-                car_type = dataset_dataframe[dataset_dataframe["Car"] == car_brand][
-                    "Model"
-                ].values[0]
+        # if vehicle_type == "Car":
+        #     brands = dataset_dataframe["Car"].unique().tolist()
+        #     car_brand = st.selectbox(
+        #         "Car Brand",
+        #         brands,
+        #     )
+        #     if car_brand:
+        #         car_type = dataset_dataframe[dataset_dataframe["Car"] == car_brand][
+        #             "Model"
+        #         ].values[0]
 
             # You could adjust emission rates based on car_type
             # This would be used later in your emission calculation
