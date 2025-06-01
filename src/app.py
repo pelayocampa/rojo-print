@@ -15,7 +15,7 @@ if "total_co2" not in st.session_state:
     st.session_state.total_co2 = 0
 
 # Header
-st.title("🌍 Rojo-Foot-Print")
+st.title("🌍 Rojo-Foot-Print Mockup")
 st.markdown("Track and visualize your carbon footprint from travel")
 
 # Create two columns for the main layout
@@ -120,7 +120,7 @@ with col2:
 
     # Layer control for the map would be added here in a more complex implementation
     st.info(
-        "In a full implementation, the map would include layer controls and actual routes."
+        "You can add journeys using the form on the left. The map will update with each new entry."
     )
 
 # Display all entries in a table
