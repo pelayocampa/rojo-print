@@ -2,12 +2,13 @@ import random
 from datetime import datetime
 
 import folium
-#import kagglehub
+import kagglehub
+from kagglehub import KaggleDatasetAdapter
 import pandas as pd
 import streamlit as st
 from geopy.distance import geodesic
 from geopy.geocoders import Nominatim
-from streamlit_folium import folium_static
+from streamlit_folium import st_folium
 
 # Set page config
 st.set_page_config(page_title="Rojo-Foot-Print", page_icon="🌍", layout="wide")
@@ -22,6 +23,16 @@ if "total_co2" not in st.session_state:
 # Header
 st.title("🌍 Rojo-Foot-Print Mockup")
 st.markdown("Track and visualize your carbon footprint from travel")
+
+
+@st.cache_data
+def load_dataset():
+    return kagglehub.dataset_load(
+        KaggleDatasetAdapter.PANDAS,
+        "midhundasl/co2-emission-of-cars-dataset",
+        "DATA.csv",
+    )
+
 
 # Create two columns for the main layout
 operations_col, map_col = st.columns([1, 2])
@@ -43,6 +54,12 @@ with operations_col:
             "Transport Type", ["Car", "Bus", "Train", "Plane", "Bicycle", "Walk"]
         )
 
+        st.dataframe(
+            load_dataset(),
+            use_container_width=True,
+            hide_index=True,
+        )
+
         # Show additional options if Car is selected
         # if vehicle_type == "Car":
         #     brands = dataset_dataframe["Car"].unique().tolist()
@@ -55,8 +72,8 @@ with operations_col:
         #             "Model"
         #         ].values[0]
 
-            # You could adjust emission rates based on car_type
-            # This would be used later in your emission calculation
+        # You could adjust emission rates based on car_type
+        # This would be used later in your emission calculation
 
         # CO2 emission rates in g/km (simplified)
         emission_rates = {
@@ -164,7 +181,7 @@ with map_col:
             }.get(entry["vehicle"], "gray")
 
     # Display the map
-    folium_static(m)
+    st_folium(m)
 
     # Layer control for the map would be added here in a more complex implementation
     st.info(
