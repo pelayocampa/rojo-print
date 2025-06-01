@@ -91,6 +91,8 @@ with operations_col:
                     st.session_state.entries.append(entry)
                     st.session_state.total_co2 += co2_emitted
                     st.success(f"Added journey from {origin} to {destination}")
+
+                    st.balloons()  # Celebrate the addition
                 else:
                     st.warning("Couldn't find one or both locations.")
             except Exception as e:
@@ -137,14 +139,6 @@ with map_col:
                 "Bicycle": "green",
                 "Walk": "green",
             }.get(entry["vehicle"], "gray")
-
-            folium.Marker(
-                [lat, lon],
-                popup=f"{entry['origin']} to {entry['destination']}<br>"
-                f"{entry['vehicle']} | {entry['distance_km']} km<br>"
-                f"CO2: {entry['co2_kg']:.2f} kg",
-                icon=folium.Icon(color=color),
-            ).add_to(m)
 
     # Display the map
     folium_static(m)
