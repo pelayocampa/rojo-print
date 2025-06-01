@@ -19,9 +19,9 @@ st.title("🌍 Rojo-Foot-Print Mockup")
 st.markdown("Track and visualize your carbon footprint from travel")
 
 # Create two columns for the main layout
-col1, col2 = st.columns([1, 2])
+operations_col, map_col = st.columns([1, 2])
 
-with col1:
+with operations_col:
     # Form for adding new entries
     with st.form(key="entry_form"):
         st.subheader("Add New Journey")
@@ -82,7 +82,7 @@ with col1:
             "https://media.giphy.com/media/3o7TKSjRrfIPjeUGic/giphy.gif", width=200
         )
 
-with col2:
+with map_col:
     # Map display
     st.subheader("Journey Map")
 
