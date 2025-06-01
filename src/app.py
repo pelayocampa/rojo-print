@@ -2,7 +2,7 @@ import random
 from datetime import datetime
 
 import folium
-import kagglehub
+#import kagglehub
 import pandas as pd
 import streamlit as st
 from geopy.distance import geodesic
