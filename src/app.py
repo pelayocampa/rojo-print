@@ -74,30 +74,27 @@ with operations_col:
                     distance = round(
                         geodesic(origin_coords, destination_coords).kilometers
                     )
+
+                    co2_emitted = (
+                        distance * emission_rates[vehicle_type] / 1000
+                    )  # convert to kg
+
+                    entry = {
+                        "origin": origin,
+                        "destination": destination,
+                        "vehicle": vehicle_type,
+                        "distance_km": distance,
+                        "co2_kg": co2_emitted,
+                        "date": datetime.now().strftime("%Y-%m-%d %H:%M"),
+                    }
+
+                    st.session_state.entries.append(entry)
+                    st.session_state.total_co2 += co2_emitted
+                    st.success(f"Added journey from {origin} to {destination}")
                 else:
-                    st.warning(
-                        "Couldn't find one or both locations. Using estimate instead."
-                    )
+                    st.warning("Couldn't find one or both locations.")
             except Exception as e:
-                st.warning(f"Error calculating distance: {e}. Using estimate instead.")
-                distance = random.randint(10, 500)
-
-            co2_emitted = (
-                distance * emission_rates[vehicle_type] / 1000
-            )  # convert to kg
-
-            entry = {
-                "origin": origin,
-                "destination": destination,
-                "vehicle": vehicle_type,
-                "distance_km": distance,
-                "co2_kg": co2_emitted,
-                "date": datetime.now().strftime("%Y-%m-%d %H:%M"),
-            }
-
-            st.session_state.entries.append(entry)
-            st.session_state.total_co2 += co2_emitted
-            st.success(f"Added journey from {origin} to {destination}")
+                st.warning(f"Error calculating distance: {e}.")
 
     # Display CO2 Indicator
     st.subheader("Carbon Footprint")
