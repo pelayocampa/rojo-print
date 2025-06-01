@@ -7,6 +7,7 @@ requires-python = ">=3.13"
 dependencies = [
     "folium>=0.19.6",
     "geopy>=2.4.1",
+    "kagglehub>=0.3.12",
     "ruff>=0.11.12",
     "streamlit>=1.45.1",
     "streamlit-folium>=0.25.0",

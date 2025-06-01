@@ -2,6 +2,7 @@ import random
 from datetime import datetime
 
 import folium
+import kagglehub
 import pandas as pd
 import streamlit as st
 from geopy.distance import geodesic
@@ -17,12 +18,19 @@ if "entries" not in st.session_state:
 if "total_co2" not in st.session_state:
     st.session_state.total_co2 = 0
 
+
 # Header
 st.title("🌍 Rojo-Foot-Print Mockup")
 st.markdown("Track and visualize your carbon footprint from travel")
 
 # Create two columns for the main layout
 operations_col, map_col = st.columns([1, 2])
+
+cars_dataset_path = kagglehub.dataset_download(
+    "midhundasl/co2-emission-of-cars-dataset"
+)
+dataset_dataframe = pd.read_csv(cars_dataset_path)
+# Display the dataset in the sidebar
 
 with operations_col:
     # Form for adding new entries
@@ -34,6 +42,21 @@ with operations_col:
         vehicle_type = st.selectbox(
             "Transport Type", ["Car", "Bus", "Train", "Plane", "Bicycle", "Walk"]
         )
+
+        # Show additional options if Car is selected
+        if vehicle_type == "Car":
+            brands = dataset_dataframe["Car"].unique().tolist()
+            car_brand = st.selectbox(
+                "Car Brand",
+                brands,
+            )
+            if car_brand:
+                car_type = dataset_dataframe[dataset_dataframe["Car"] == car_brand][
+                    "Model"
+                ].values[0]
+
+            # You could adjust emission rates based on car_type
+            # This would be used later in your emission calculation
 
         # CO2 emission rates in g/km (simplified)
         emission_rates = {
