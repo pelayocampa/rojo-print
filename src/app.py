@@ -1,9 +1,12 @@
-import streamlit as st
-import pandas as pd
-import folium
-from streamlit_folium import folium_static
 import random
 from datetime import datetime
+
+import folium
+import pandas as pd
+import streamlit as st
+from geopy.distance import geodesic
+from geopy.geocoders import Nominatim
+from streamlit_folium import folium_static
 
 # Set page config
 st.set_page_config(page_title="Rojo-Foot-Print", page_icon="🌍", layout="wide")
@@ -47,7 +50,38 @@ with operations_col:
         if submit_button:
             # In a real app, you would calculate the distance between origin and destination
             # For now, we'll use a random distance
-            distance = random.randint(10, 500)
+            # Check if we have valid origin and destination
+            if not origin or not destination:
+                st.error("Please provide both origin and destination.")
+                st.stop()
+
+            # Use geopy to calculate the distance
+
+            try:
+                geolocator = Nominatim(user_agent="rojo-foot-print")
+                origin_location = geolocator.geocode(origin)
+                destination_location = geolocator.geocode(destination)
+
+                if origin_location and destination_location:
+                    origin_coords = (
+                        origin_location.latitude,
+                        origin_location.longitude,
+                    )
+                    destination_coords = (
+                        destination_location.latitude,
+                        destination_location.longitude,
+                    )
+                    distance = round(
+                        geodesic(origin_coords, destination_coords).kilometers
+                    )
+                else:
+                    st.warning(
+                        "Couldn't find one or both locations. Using estimate instead."
+                    )
+            except Exception as e:
+                st.warning(f"Error calculating distance: {e}. Using estimate instead.")
+                distance = random.randint(10, 500)
+
             co2_emitted = (
                 distance * emission_rates[vehicle_type] / 1000
             )  # convert to kg
